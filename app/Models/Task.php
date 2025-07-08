@@ -11,12 +11,23 @@ class Task extends Model
 {
     use HasFactory;
 
+    /**
+     * Model'in doldurulabilir alanlarını tanımlar.
+     *
+     * @var array
+     */
     protected $fillable = ['employee_id', 'title', 'status'];
 
+ 
     protected $casts = [
         'status' => TaskStatus::class,
     ];
 
+    /**
+     * Belirli bir çalışana ait görevi döner.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function employee()
     {
         return $this->belongsTo(Employee::class);

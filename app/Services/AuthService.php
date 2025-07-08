@@ -11,11 +11,25 @@ class AuthService
 {
     protected AuthRepository $authRepository;
 
+    //türrkçe yorum satırı ekle
+
+    /**
+     * AuthService sınıfı, kullanıcı kimlik doğrulama işlemlerini yönetir.
+     *
+     * @param AuthRepository $authRepository
+     */
     public function __construct(AuthRepository $authRepository)
     {
         $this->authRepository = $authRepository;
     }
 
+    /**
+     * Yeni bir kullanıcı kaydı oluşturur.
+     *
+     * @param array $data
+     * @return array
+     * @throws ValidationException
+     */
     public function register(array $data): array
     {
         $validator = Validator::make($data, [
@@ -34,6 +48,13 @@ class AuthService
         return compact('user', 'token');
     }
 
+    /**
+     * Kullanıcı giriş işlemini gerçekleştirir.
+     *
+     * @param array $credentials
+     * @return array
+     * @throws \Exception
+     */
     public function login(array $credentials): array
     {
         if (!$token = JWTAuth::attempt($credentials)) {
@@ -43,16 +64,31 @@ class AuthService
         return compact('token');
     }
 
+    /**
+     * Giriş yapmış kullanıcının bilgilerini döner.
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     public function getMe()
     {
         return auth()->user();
     }
 
+    /**
+     * Kullanıcı çıkış işlemini gerçekleştirir.
+     *
+     * @return void
+     */
     public function logout(): void
     {
         auth()->logout();
     }
 
+    /**
+     * Kullanıcının JWT token'ını yeniler.
+     *
+     * @return array
+     */
     public function refresh(): array
     {
         return ['token' => auth()->refresh()];

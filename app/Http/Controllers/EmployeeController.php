@@ -13,27 +13,52 @@ class EmployeeController extends Controller
 {
     protected EmployeeService $employeeService;
 
+    // EmployeeService sınıfını enjekte ediyoruz
     public function __construct(EmployeeService $employeeService)
     {
         $this->employeeService = $employeeService;
     }
 
+    /**
+     * Çalışanların listesini döner.
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         return response()->json($this->employeeService->getAll());
     }
 
+    /**
+     * Yeni bir çalışan kaydı oluşturur.
+     *
+     * @param StoreEmployeeRequest $request
+     * @return JsonResponse
+     */
    public function store(StoreEmployeeRequest $request): JsonResponse
 {
     $employee = $this->employeeService->create($request->validated());
     return response()->json($employee, 201);
 }
 
+    /**
+     * Çalışan bilgilerini günceller.
+     *
+     * @param UpdateEmployeeRequest $request
+     * @param string $id
+     * @return JsonResponse
+     */
 public function update(UpdateEmployeeRequest $request, string $id): JsonResponse
 {
     $employee = $this->employeeService->update($id, $request->validated());
     return response()->json($employee);
 }
+    /**
+     * Belirli bir çalışanın bilgilerini döner.
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
     public function show(string $id): JsonResponse
     {
         $employee = $this->employeeService->getById($id);
@@ -43,6 +68,12 @@ public function update(UpdateEmployeeRequest $request, string $id): JsonResponse
 
    
 
+    /**
+     * Belirli bir çalışanın görevlerini döner.
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
     public function destroy(string $id): JsonResponse
     {
         $this->employeeService->delete($id);

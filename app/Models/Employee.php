@@ -11,14 +11,14 @@ class Employee extends Model
 
     protected $fillable = ['name', 'email'];
 
+    /**
+     * Belirli bir çalışanın görevlerini döner.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tasks()
 {
     return $this->hasMany(Task::class);
-}
-
-public function employee()
-{
-    return $this->belongsTo(Employee::class);
 }
 
 
